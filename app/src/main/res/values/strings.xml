@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">GB_Note</string>
     <string name="note1">Заметка 1</string>
-    <string name="notes">Note</string>
+    <string name="notes">Notes</string>
 </resources>

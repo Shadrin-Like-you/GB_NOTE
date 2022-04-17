@@ -1,6 +1,7 @@
 package com.shadrin_like_you.gb_note.ui;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,9 @@ import com.shadrin_like_you.gb_note.domain.Note;
 import java.util.List;
 
 public class NotesFragment extends Fragment {
+
+    public static final String NOTES_CLICKED_KEY = "NOTES_CLICKED_KEY";
+    public static final String SELECTED_KEY = "SELECTED_KEY";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -49,8 +53,17 @@ public class NotesFragment extends Fragment {
             itemView.findViewById(R.id.root).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(requireContext(), note.getTitle(), Toast.LENGTH_SHORT).show(); //показываем выбраную заметку
+                    if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
 
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelable(SELECTED_KEY, note);
+                        getParentFragmentManager()
+                                .setFragmentResult(NOTES_CLICKED_KEY, bundle);
+                    } else {
+
+                        NoteDetailsActivity.show(requireContext(), note); // тоже самое что и Toast, но на отдельном активити
+                        // Toast.makeText(requireContext(), note.getTitle(), Toast.LENGTH_SHORT).show(); //показываем выбраную заметку
+                    }
                 }
             });
 
