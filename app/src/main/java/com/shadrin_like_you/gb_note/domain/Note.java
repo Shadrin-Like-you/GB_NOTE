@@ -1,8 +1,11 @@
 package com.shadrin_like_you.gb_note.domain;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Date;
 
-public class Note {
+public class Note implements Parcelable {
     private String title;           //заголовок
     private String content;         //содержимое
     private Date createDate;        //дата и время создания
@@ -20,6 +23,25 @@ public class Note {
 
     public Note(String string) {
     }
+
+    protected Note(Parcel in) {
+        title = in.readString();
+        content = in.readString();
+        state = in.readByte() != 0;
+        icon = in.readInt();
+    }
+
+    public static final Creator<Note> CREATOR = new Creator<Note>() {
+        @Override
+        public Note createFromParcel(Parcel in) {
+            return new Note(in);
+        }
+
+        @Override
+        public Note[] newArray(int size) {
+            return new Note[size];
+        }
+    };
 
     public void setTitle(String title) {
         this.title = title;
@@ -58,4 +80,16 @@ public class Note {
     }
 
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(title);
+        parcel.writeString(content);
+        parcel.writeByte((byte) (state ? 1 : 0));
+        parcel.writeInt(icon);
+    }
 }
