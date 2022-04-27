@@ -29,7 +29,7 @@ public class InMemoryNotesRepo implements NotesRepository {
     @Override
     public List<Note> getAll() {
         ArrayList<Note> result = new ArrayList<>();
-        result.add(new Note(context.getString(R.string.note1)));
+        result.add(new Note(context.getString(R.string.note1),R.drawable.ic_baseline_auto_stories_24));
         return result;
     }
 
