@@ -6,7 +6,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
+
+import androidx.appcompat.widget.PopupMenu;
+import androidx.appcompat.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,6 +33,7 @@ public class NoteDetailsFragment extends Fragment {
 
         Bundle args = new Bundle();
         args.putParcelable(ARG_NOTE, note);
+
         NoteDetailsFragment fragment = new NoteDetailsFragment();
         fragment.setArguments(args);
         return fragment;
@@ -45,17 +48,53 @@ public class NoteDetailsFragment extends Fragment {
 
         Toolbar toolbar = view.findViewById(R.id.toolbar);
 
+        if (requireActivity() instanceof ToolbarHolder) {
+            ((ToolbarHolder) requireActivity()).setToolbar(toolbar);
+        }
+
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.action_send) {
-                    Toast.makeText(requireContext(), "send", Toast.LENGTH_SHORT).show();
-                    return true;
+                switch (item.getItemId()) {
+                    case R.id.action_info:
+                        Toast.makeText(requireContext(), "info", Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.action_share:
+                        Toast.makeText(requireContext(), "share", Toast.LENGTH_SHORT).show();
+                        return true;
                 }
+
                 return false;
             }
         });
 
+
+        title.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupMenu popupMenu = new PopupMenu(requireContext(), view);
+
+                requireActivity().getMenuInflater().inflate(R.menu.menu_pop_up, popupMenu.getMenu());
+
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.action_search:
+                                Toast.makeText(requireContext(), "search", Toast.LENGTH_SHORT).show();
+                                return true;
+                            case R.id.action_copy:
+                                Toast.makeText(requireContext(), "copy", Toast.LENGTH_SHORT).show();
+                                return true;
+                        }
+
+                        return false;
+                    }
+                });
+
+                popupMenu.show();
+            }
+        });
 
 
         getParentFragmentManager()

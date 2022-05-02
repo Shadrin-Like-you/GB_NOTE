@@ -20,6 +20,7 @@
             app:menu="@menu/menu_main"/>
     </com.google.android.material.appbar.AppBarLayout>
 
+
     <ImageView
         android:id="@+id/icon"
         android:layout_width="100dp"

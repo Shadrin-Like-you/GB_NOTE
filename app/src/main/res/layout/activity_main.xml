@@ -20,6 +20,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:menu="@menu/menu_nav_drawer"
+        app:headerLayout="@layout/item_nav_header"
        />
 
 </androidx.drawerlayout.widget.DrawerLayout>

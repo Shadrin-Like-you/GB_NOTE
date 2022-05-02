@@ -7,4 +7,9 @@
     <string name="action_send">send</string>
     <string name="action_notes">Notes</string>
     <string name="action_fragment">Fragment</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+    <string name="action_copy">Copy</string>
+    <string name="action_search">Search</string>
+    <string name="Setting">Settings</string>
 </resources>

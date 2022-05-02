@@ -7,8 +7,8 @@
         android:title="@string/action_notes" />
 
     <item
-        android:id="@+id/action_fragment"
-        android:title="@string/action_fragment" />
+        android:id="@+id/fragment_setting"
+        android:title="@string/Setting" />
 
 
 
