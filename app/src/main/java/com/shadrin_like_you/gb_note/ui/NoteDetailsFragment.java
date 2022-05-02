@@ -1,9 +1,12 @@
 package com.shadrin_like_you.gb_note.ui;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,6 +42,21 @@ public class NoteDetailsFragment extends Fragment {
 
         title = view.findViewById(R.id.title);
         icon = view.findViewById(R.id.icon);
+
+        Toolbar toolbar = view.findViewById(R.id.toolbar);
+
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.action_send) {
+                    Toast.makeText(requireContext(), "send", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+                return false;
+            }
+        });
+
+
 
         getParentFragmentManager()
                 .setFragmentResultListener(NotesFragment.NOTES_CLICKED_KEY, getViewLifecycleOwner(), new FragmentResultListener() {

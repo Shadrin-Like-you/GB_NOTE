@@ -9,8 +9,10 @@
         android:layout_height="wrap_content">
 
         <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="72dp"
+            app:menu="@menu/menu_note_details"
             app:title="@string/notes" />
     </com.google.android.material.appbar.AppBarLayout>
 

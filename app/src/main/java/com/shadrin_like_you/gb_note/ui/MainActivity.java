@@ -1,11 +1,15 @@
 package com.shadrin_like_you.gb_note.ui;
 
+import android.annotation.SuppressLint;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.Bundle;
-import android.view.View;
 import com.shadrin_like_you.gb_note.R;
-import com.shadrin_like_you.gb_note.ui.settings.SettingsFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -14,7 +18,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
-   /* findViewById(R.id.settings).setOnClickListener(new View.OnClickListener() {
+
+
+
+    /* findViewById(R.id.settings).setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
 
