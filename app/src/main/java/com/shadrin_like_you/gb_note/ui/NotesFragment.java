@@ -88,7 +88,7 @@ public class NotesFragment extends Fragment {
 
             TextView title = itemView.findViewById(R.id.title);
 
-            title.setText(note.getTitle());
+            title.setText(note.getName());
 
             container.addView(itemView);
         }
