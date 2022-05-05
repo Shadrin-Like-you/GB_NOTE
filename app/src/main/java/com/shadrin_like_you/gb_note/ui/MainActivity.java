@@ -11,7 +11,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
 import com.shadrin_like_you.gb_note.R;
-import com.shadrin_like_you.gb_note.ui.settings.SettingsFragment;
 
 public class MainActivity extends AppCompatActivity implements ToolbarHolder {
 
@@ -40,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements ToolbarHolder {
 
                         return true;
 
-//                    case R.id.action_fragment:
+//                    case R.id.settings:
 //                        getSupportFragmentManager().popBackStack();
 //
 //                        getSupportFragmentManager().beginTransaction()
@@ -50,6 +49,17 @@ public class MainActivity extends AppCompatActivity implements ToolbarHolder {
 //                        drawerLayout.closeDrawer();
 //
 //                        return true;
+
+                    case R.id.action_notifications:
+                        getSupportFragmentManager().popBackStack();
+
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.fragment_container, new NotificationsFragment())
+                                .commit();
+
+                        drawerLayout.closeDrawers();
+
+                        return true;
 
 
                 }
