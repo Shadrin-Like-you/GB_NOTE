@@ -1,7 +1,10 @@
 package com.shadrin_like_you.gb_note.ui;
 
 
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -11,11 +14,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.NotificationChannelCompat;
+import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentResultListener;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.shadrin_like_you.gb_note.R;
+
+import java.util.Arrays;
 
 public class NotificationsFragment extends Fragment {
 
@@ -29,7 +36,7 @@ public class NotificationsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+            //Создания канала уведомлений
         NotificationChannelCompat notificationChannelCompat = new NotificationChannelCompat.Builder(CHANNEL_ID, NotificationManagerCompat.IMPORTANCE_DEFAULT)
                 .setName("Channel Name")
                 .setDescription("Description")
@@ -43,15 +50,15 @@ public class NotificationsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-//            getParentFragmentManager()
-//                    .setFragmentResultListener(CustomViewDialogFragment.RESULT_KEY, getViewLifecycleOwner(), new FragmentResultListener() {
-//                        @Override
-//                        public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
-//                            String message = result.getString(CustomViewDialogFragment.ARG_MESSAGE);
-//
-//                            Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
-//                        }
-//                    });
+            getParentFragmentManager()
+                    .setFragmentResultListener(CustomViewDialogFragment.RESULT_KEY, getViewLifecycleOwner(), new FragmentResultListener() {
+                        @Override
+                        public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
+                            String message = result.getString(CustomViewDialogFragment.ARG_MESSAGE);
+
+                            Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
+                        }
+                    });
         view.findViewById(R.id.toast).setOnClickListener(new View.OnClickListener() {       //Сообщение от приложения (поверх окон без конкретики)
             @Override
             public void onClick(View view) {
@@ -159,6 +166,109 @@ public class NotificationsFragment extends Fragment {
             }
         });
 
+        view.findViewById(R.id.dialog_single_choice).setOnClickListener(new View.OnClickListener() {
+
+            // Единичный выбор (выбирает пользователь)
+
+            @Override
+            public void onClick(View view) {
+                CharSequence[] items = {"1", "2", "3", "4"};
+
+                final int[] selected = {-1};
+
+                new AlertDialog.Builder(requireContext())
+                        .setSingleChoiceItems(items, selected[0], new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                selected[0] = i;
+                            }
+                        })
+                        .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Toast.makeText(requireContext(), items[selected[0]], Toast.LENGTH_SHORT).show();
+
+                            }
+                        })
+                        .show();
+
+            }
+        });
+
+        view.findViewById(R.id.dialog_multiple_choice).setOnClickListener(new View.OnClickListener() {
+
+            // Несколько вариантов выбора (выбирает пользователь)
+
+            @Override
+            public void onClick(View view) {
+                CharSequence[] items = {"1", "2", "3", "4"};
+                boolean[] selected = {false, false, false, false};
+
+                new AlertDialog.Builder(requireContext())
+                        .setMultiChoiceItems(items, selected, new DialogInterface.OnMultiChoiceClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i, boolean b) {
+                                selected[i] = b;
+                            }
+                        })
+                        .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Toast.makeText(requireContext(), Arrays.toString(selected), Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .show();
+
+            }
+        });
+
+        view.findViewById(R.id.dialog_custom_dialog_fragment).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomViewDialogFragment.newInstance("Message")
+                        .show(getParentFragmentManager(), "");
+            }
+        });
+
+        view.findViewById(R.id.dialog_fragment_custom_view).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new VeryCustomDialogFragment().show(getParentFragmentManager(), "");
+            }
+        });
+
+        view.findViewById(R.id.bottom_sheet).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new BottomSheetDialogFragment().show(getParentFragmentManager(), "");
+
+            }
+        });
+
+        view.findViewById(R.id.system_tray_notification).setOnClickListener(new View.OnClickListener() {
+
+            // Показывает уведомления вне приложения
+
+            @Override
+            public void onClick(View view) {
+
+                Intent launchMain = new Intent(requireContext(), MainActivity.class);
+
+                PendingIntent pendingIntent = PendingIntent.getActivity(requireContext(), 0, launchMain, PendingIntent.FLAG_CANCEL_CURRENT);
+
+                Notification notification = new NotificationCompat.Builder(requireContext(), CHANNEL_ID)
+                        .setContentTitle("Title")
+                        .setSmallIcon(R.drawable.ic_baseline_send_24)
+                        .setContentText("Text")
+                        .setAutoCancel(true)
+                        .setContentIntent(pendingIntent)
+                        .build();
+
+                NotificationManagerCompat.from(requireContext())
+                        .notify(10, notification);
+
+            }
+        });
 
     }
 

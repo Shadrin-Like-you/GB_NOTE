@@ -1,10 +1,12 @@
 package com.shadrin_like_you.gb_note.ui;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -61,7 +63,6 @@ public class MainActivity extends AppCompatActivity implements ToolbarHolder {
 
                         return true;
 
-
                 }
                 return false;
             }
@@ -80,6 +81,18 @@ public class MainActivity extends AppCompatActivity implements ToolbarHolder {
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
 
         actionBarDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setTitle("Выйти из приложения?")
+                .setNegativeButton(android.R.string.no, null)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        MainActivity.super.onBackPressed();
+                    }
+                }).create().show();
     }
 
     /* findViewById(R.id.settings).setOnClickListener(new View.OnClickListener() {
