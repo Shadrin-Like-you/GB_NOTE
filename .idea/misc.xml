@@ -3,11 +3,34 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Projects/Android/GB_Note/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
+        <entry key="..\:/Projects/Android/GB_Note/app/src/main/res/drawable/ic_baseline_android_24.xml" value="0.1" />
         <entry key="..\:/Projects/Android/GB_Note/app/src/main/res/drawable/ic_baseline_auto_stories_24.xml" value="0.1" />
+        <entry key="..\:/Projects/Android/GB_Note/app/src/main/res/drawable/ic_baseline_info_24.xml" value="0.1" />
+        <entry key="..\:/Projects/Android/GB_Note/app/src/main/res/drawable/ic_baseline_notes_24.xml" value="0.1" />
+        <entry key="..\:/Projects/Android/GB_Note/app/src/main/res/drawable/ic_baseline_send_24.xml" value="0.1" />
+        <entry key="..\:/Projects/Android/GB_Note/app/src/main/res/drawable/ic_baseline_share_24.xml" value="0.1" />
         <entry key="..\:/Projects/Android/GB_Note/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
-        <entry key="..\:/Projects/Android/GB_Note/app/src/main/res/layout/activity_main.xml" value="0.22" />
-        <entry key="..\:/Projects/Android/GB_Note/app/src/main/res/layout/fragment_notes_list.xml" value="0.25" />
+        <entry key="..\:/Projects/Android/GB_Note/app/src/main/res/layout-land/activity_main.xml" value="0.11" />
+        <entry key="..\:/Projects/Android/GB_Note/app/src/main/res/layout/activity_fragment_manager.xml" value="0.1" />
+        <entry key="..\:/Projects/Android/GB_Note/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/Projects/Android/GB_Note/app/src/main/res/layout/activity_note_details_activiti.xml" value="0.1" />
+        <entry key="..\:/Projects/Android/GB_Note/app/src/main/res/layout/activity_note_details_activity.xml" value="0.12" />
+        <entry key="..\:/Projects/Android/GB_Note/app/src/main/res/layout/dialog_custom_title.xml" value="0.1" />
+        <entry key="..\:/Projects/Android/GB_Note/app/src/main/res/layout/dialog_custom_view.xml" value="0.1" />
+        <entry key="..\:/Projects/Android/GB_Note/app/src/main/res/layout/fragment_notes_details.xml" value="0.18" />
+        <entry key="..\:/Projects/Android/GB_Note/app/src/main/res/layout/fragment_notes_list.xml" value="0.1" />
+        <entry key="..\:/Projects/Android/GB_Note/app/src/main/res/layout/fragment_notifications.xml" value="0.22" />
+        <entry key="..\:/Projects/Android/GB_Note/app/src/main/res/layout/fragment_settings.xml" value="0.15" />
+        <entry key="..\:/Projects/Android/GB_Note/app/src/main/res/layout/fragment_sheet_dialog.xml" value="0.25" />
+        <entry key="..\:/Projects/Android/GB_Note/app/src/main/res/layout/fragment_very_custom_dialog.xml" value="0.13278008298755187" />
+        <entry key="..\:/Projects/Android/GB_Note/app/src/main/res/layout/item_nav_header.xml" value="0.18" />
         <entry key="..\:/Projects/Android/GB_Note/app/src/main/res/layout/item_note.xml" value="0.1" />
+        <entry key="..\:/Projects/Android/GB_Note/app/src/main/res/menu/bottom_navigation.xml" value="0.25" />
+        <entry key="..\:/Projects/Android/GB_Note/app/src/main/res/menu/menu_main.xml" value="0.22" />
+        <entry key="..\:/Projects/Android/GB_Note/app/src/main/res/menu/menu_nav_drawer.xml" value="0.18" />
+        <entry key="..\:/Projects/Android/GB_Note/app/src/main/res/menu/menu_note_details.xml" value="0.22" />
+        <entry key="..\:/Projects/Android/GB_Note/app/src/main/res/menu/menu_pop_up.xml" value="0.18" />
       </map>
     </option>
   </component>
