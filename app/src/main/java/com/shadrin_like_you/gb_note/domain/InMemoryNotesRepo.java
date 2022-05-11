@@ -1,40 +1,32 @@
 package com.shadrin_like_you.gb_note.domain;
 
 import android.content.Context;
+import android.service.quicksettings.Tile;
 
 import com.shadrin_like_you.gb_note.R;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 public class InMemoryNotesRepo implements NotesRepository {
 
 
-    private static NotesRepository INSTATE;
+   private ArrayList<Note> data = new ArrayList<>();
 
-    public static NotesRepository getINSTATE (Context context) {
-        if (INSTATE == null) {
-            INSTATE = new InMemoryNotesRepo(context);
-        }
-        return INSTATE;
-    }
+   public InMemoryNotesRepo () {
 
-    private Context context;
-
-    private InMemoryNotesRepo(Context context) {
-        this.context = context;
-    }
+       data.add(new Note(UUID.randomUUID().toString(), "Title 1", "Message 1", new Date()));
+       data.add(new Note(UUID.randomUUID().toString(), "Title 2", "Message 2", new Date()));
+       data.add(new Note(UUID.randomUUID().toString(), "Title 3", "Message 3", new Date()));
+       data.add(new Note(UUID.randomUUID().toString(), "Title 4", "Message 4", new Date()));
+       data.add(new Note(UUID.randomUUID().toString(), "Title 5", "Message 5", new Date()));
+   }
 
 
     @Override
     public List<Note> getAll() {
-        ArrayList<Note> result = new ArrayList<>();
-        result.add(new Note(context.getString(R.string.note1),R.drawable.ic_baseline_auto_stories_24));
-        return result;
-    }
-
-    @Override
-    public void add(Note note) {
-
+        return data;
     }
 }

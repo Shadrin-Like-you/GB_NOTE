@@ -15,18 +15,25 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.shadrin_like_you.gb_note.R;
-import com.shadrin_like_you.gb_note.domain.InMemoryNotesRepo;
+import com.shadrin_like_you.gb_note.di.Dependencies;
 import com.shadrin_like_you.gb_note.domain.Note;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class NotesFragment extends Fragment {
 
     public static final String NOTES_CLICKED_KEY = "NOTES_CLICKED_KEY";
     public static final String SELECTED_KEY = "SELECTED_KEY";
 
+    public NotesFragment() {
+        super(R.layout.fragment_notes_list);
+    }
 
     @Nullable
     @Override
@@ -55,43 +62,32 @@ public class NotesFragment extends Fragment {
             }
         });
 
+        RecyclerView notesList = view.findViewById(R.id.notes_list); //находим нужный контейнер по id
 
-        List<Note> notes = InMemoryNotesRepo.getINSTATE(requireContext()).getAll(); //берем список из MemoryRepo/ requireContext() - возвращаем контекс
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
+        notesList.setLayoutManager(layoutManager);
 
-        LinearLayout container = view.findViewById(R.id.container); //находим нужный контейнер по id
+        NotesAdapter adapter = new NotesAdapter();
 
-        for (Note note : notes) {
+        adapter.setNoteClicked(new NotesAdapter.OnNoteClicked() {
+            @Override
+            public void onNoteClicked(Note note) {
+                Toast.makeText(requireContext(), note.getTitle(), Toast.LENGTH_SHORT).show();
+            }
 
+            @Override
+            public void onNoteLongClicked(Note note, int position) {
 
-            View itemView = getLayoutInflater().inflate(R.layout.item_note, container, false);
+            }
+        });
 
-            itemView.findViewById(R.id.root).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        notesList.setAdapter(adapter);
 
-                        Bundle bundle = new Bundle();
-                        bundle.putParcelable(SELECTED_KEY, note);
-                        getParentFragmentManager()
-                                .setFragmentResult(NOTES_CLICKED_KEY, bundle);
-                    } else {
+        List<Note> notes = Dependencies.NOTES_REPOSITORY.getAll(); //берем список из MemoryRepo/ requireContext() - возвращаем контекс
 
-                        NoteDetailsActivity.show(requireContext(), note); // тоже самое что и Toast, но на отдельном активити
-                        // Toast.makeText(requireContext(), note.getTitle(), Toast.LENGTH_SHORT).show(); //показываем выбраную заметку
-                    }
-                }
-            });
+        adapter.setData(notes);
 
-            ImageView icon = itemView.findViewById(R.id.icon);
-
-            icon.setImageResource(note.getIcon());
-
-            TextView title = itemView.findViewById(R.id.title);
-
-            title.setText(note.getName());
-
-            container.addView(itemView);
-        }
+        adapter.notifyDataSetChanged();  //перерисовка
 
     }
 }
