@@ -94,6 +94,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
             icon = itemView.findViewById(R.id.icon);
 
         itemView.findViewById(R.id.card_view).setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
                 if (noteClicked != null) {
