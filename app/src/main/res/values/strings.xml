@@ -14,4 +14,9 @@
     <string name="Setting">Settings</string>
     <string name="action_notifications">Notification</string>
     <string name="info">Info</string>
+    <string name="title">Title</string>
+    <string name="message">Message</string>
+    <string name="save">Save</string>
+    <string name="action_edit">Edit</string>
+    <string name="action_delete">Deleted</string>
 </resources>

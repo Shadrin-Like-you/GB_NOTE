@@ -1,35 +1,40 @@
 package com.shadrin_like_you.gb_note.ui;
 
-import android.content.res.Configuration;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentResultListener;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.shadrin_like_you.gb_note.R;
 import com.shadrin_like_you.gb_note.di.Dependencies;
+import com.shadrin_like_you.gb_note.domain.Callback;
 import com.shadrin_like_you.gb_note.domain.Note;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Locale;
 
 public class NotesFragment extends Fragment {
 
     public static final String NOTES_CLICKED_KEY = "NOTES_CLICKED_KEY";
     public static final String SELECTED_KEY = "SELECTED_KEY";
+
+    private Note selectedNote;
+    private int selectedPosition;
+
+    private NotesAdapter adapter;
+    private ProgressBar progressBar;
 
     public NotesFragment() {
         super(R.layout.fragment_notes_list);
@@ -67,7 +72,7 @@ public class NotesFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
         notesList.setLayoutManager(layoutManager);
 
-        NotesAdapter adapter = new NotesAdapter();
+       adapter = new NotesAdapter(this);
 
         adapter.setNoteClicked(new NotesAdapter.OnNoteClicked() {
             @Override
@@ -78,16 +83,110 @@ public class NotesFragment extends Fragment {
             @Override
             public void onNoteLongClicked(Note note, int position) {
 
+                selectedNote = note;
+                selectedPosition = position;
+
             }
         });
 
         notesList.setAdapter(adapter);
 
-        List<Note> notes = Dependencies.NOTES_REPOSITORY.getAll(); //берем список из MemoryRepo/ requireContext() - возвращаем контекс
 
-        adapter.setData(notes);
+        getParentFragmentManager()
+                .setFragmentResultListener(AddNoteBottomSheetDialogFragment.ADD_KEY_RESULT, getViewLifecycleOwner(), new FragmentResultListener() {
+                    @Override
+                    public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
+                        Note note = result.getParcelable(AddNoteBottomSheetDialogFragment.ARG_NOTE);
 
-        adapter.notifyDataSetChanged();  //перерисовка
+                        int index = adapter.addNote(note);
+
+                        adapter.notifyItemInserted(index);
+
+                        notesList.smoothScrollToPosition(index);
+                    }
+                });
+
+        getParentFragmentManager()
+                .setFragmentResultListener(AddNoteBottomSheetDialogFragment.UPDATE_KEY_RESULT, getViewLifecycleOwner(), new FragmentResultListener() {
+                    @Override
+                    public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
+                        Note note = result.getParcelable(AddNoteBottomSheetDialogFragment.ARG_NOTE);
+
+                        adapter.replaceNote(note, selectedPosition);
+
+                        adapter.notifyItemChanged(selectedPosition);
+                    }
+                });
+
+        view.findViewById(R.id.add).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               new AddNoteBottomSheetDialogFragment()
+                        .show(getParentFragmentManager(), "AddNoteBottomSheetDialogFragment");
+            }
+        });
+
+        ProgressBar progressBar = view.findViewById(R.id.progress);
+
+        Dependencies.NOTES_REPOSITORY.getAll(new Callback<List<Note>>() {
+            @Override
+            public void onSuccess(List<Note> data) {
+
+                adapter.setData(data); //берем список из MemoryRepo/ requireContext() - возвращаем контекс
+
+                adapter.notifyDataSetChanged();  //перерисовка
+
+                progressBar.setVisibility(View.GONE);
+
+            }
+
+            @Override
+            public void onError(Throwable exception) {
+
+                progressBar.setVisibility(View.GONE);
+
+            }
+        });
 
     }
+
+    @Override
+    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+        MenuInflater menuInflater = requireActivity().getMenuInflater();
+        menuInflater.inflate(R.menu.menu_notes_context, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_delete:
+
+                progressBar.setVisibility(View.VISIBLE);
+
+                Dependencies.getNotesRepository().removeNote(selectedNote, new Callback<Void>() {
+                    @Override
+                    public void onSuccess(Void data) {
+
+                        progressBar.setVisibility(View.GONE);
+
+                        adapter.removeNote(selectedNote);
+
+                        adapter.notifyItemRemoved(selectedPosition);
+                    }
+
+                    @Override
+                    public void onError(Throwable exception) {
+
+                    }
+                });
+
+                return true;
+
+
+        }
+        return super.onContextItemSelected(item);
+    }
+
 }

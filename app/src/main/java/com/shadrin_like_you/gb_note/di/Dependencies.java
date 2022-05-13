@@ -8,4 +8,7 @@ public class Dependencies {
     public static final NotesRepository NOTES_REPOSITORY = new InMemoryNotesRepo();
 
 
+    public static NotesRepository getNotesRepository() {
+        return NOTES_REPOSITORY;
+    }
 }

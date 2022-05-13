@@ -66,6 +66,7 @@ public class Note implements Parcelable {
     public String getContent() {
         return content;
     }
+
     public Date getCreateDate() {
         return createDate;
     }
@@ -94,5 +95,6 @@ public class Note implements Parcelable {
     public int hashCode() {
         return Objects.hash(id, title, content, createDate, icon, state);
     }
+
 
 }
