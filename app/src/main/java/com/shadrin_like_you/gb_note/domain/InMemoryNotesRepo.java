@@ -116,9 +116,9 @@ public class InMemoryNotesRepo implements NotesRepository {
 
                 Note newNote = new Note(note.getId(), title, message, note.getCreateDate());
 
-                int index = data.indexOf(note);
+                int index = data.indexOf(note); //замена индекса старого на нового
 
-                data.set(index, newNote);
+                data.set(index, newNote); // устанавливаем новую заметку (отредактированную)
 
                 handler.post(new Runnable() {
                     @Override

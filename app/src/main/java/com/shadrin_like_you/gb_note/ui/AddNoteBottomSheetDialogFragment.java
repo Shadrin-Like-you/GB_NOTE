@@ -21,6 +21,20 @@ public class AddNoteBottomSheetDialogFragment extends BottomSheetDialogFragment{
     public static final String UPDATE_KEY_RESULT = "AddNoteBottomSheetDialogFragment_UPDATE_KEY_RESULT";
     public static final String ARG_NOTE = "ARG_NOTE";
 
+    public static AddNoteBottomSheetDialogFragment addInstance() {
+        return new AddNoteBottomSheetDialogFragment();
+    }
+
+    public static AddNoteBottomSheetDialogFragment editInstance(Note note) {
+
+        Bundle args = new Bundle();
+        args.putParcelable(ARG_NOTE, note);
+
+        AddNoteBottomSheetDialogFragment fragment = new AddNoteBottomSheetDialogFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -40,10 +54,10 @@ public class AddNoteBottomSheetDialogFragment extends BottomSheetDialogFragment{
         EditText title = view.findViewById(R.id.title);
         EditText message = view.findViewById(R.id.message);
 
-//        if (noteToEdit != null) {
-//            title.setText(noteToEdit.getTitle());
-//            message.setText(noteToEdit.getMessage());
-//        }
+        if (noteToEdit != null) {
+            title.setText(noteToEdit.getTitle());
+            message.setText(noteToEdit.getContent());
+        }
 
         Button btnSave = view.findViewById(R.id.save);
         Note finalNoteToEdit = noteToEdit;
@@ -76,7 +90,7 @@ public class AddNoteBottomSheetDialogFragment extends BottomSheetDialogFragment{
                     });
                 } else {
 
-                    Dependencies.getNotesRepository().addNote(title.getText().toString(), message.getText().toString(), new Callback<Note>() {
+                    Dependencies.getNotesRepository().addNote(title.getText().toString(), message.getText().toString(), new Callback<Note>() { //метод обновления заметки
                         @Override
                         public void onSuccess(Note data) {
 

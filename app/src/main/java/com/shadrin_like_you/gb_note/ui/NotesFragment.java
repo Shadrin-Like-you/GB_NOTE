@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentResultListener;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -72,9 +73,15 @@ public class NotesFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
         notesList.setLayoutManager(layoutManager);
 
-       adapter = new NotesAdapter(this);
+
+        DefaultItemAnimator defaultItemAnimator = new DefaultItemAnimator();  //Настройки анимации
+        defaultItemAnimator.setRemoveDuration(3000L);
+        notesList.setItemAnimator(defaultItemAnimator);
+
+        adapter = new NotesAdapter(this);
 
         adapter.setNoteClicked(new NotesAdapter.OnNoteClicked() {
+
             @Override
             public void onNoteClicked(Note note) {
                 Toast.makeText(requireContext(), note.getTitle(), Toast.LENGTH_SHORT).show();
@@ -121,12 +128,14 @@ public class NotesFragment extends Fragment {
         view.findViewById(R.id.add).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               new AddNoteBottomSheetDialogFragment()
+                new AddNoteBottomSheetDialogFragment()
                         .show(getParentFragmentManager(), "AddNoteBottomSheetDialogFragment");
             }
         });
 
-        ProgressBar progressBar = view.findViewById(R.id.progress);
+        progressBar = view.findViewById(R.id.progress);
+
+        progressBar.setVisibility(View.VISIBLE);
 
         Dependencies.NOTES_REPOSITORY.getAll(new Callback<List<Note>>() {
             @Override
@@ -184,6 +193,10 @@ public class NotesFragment extends Fragment {
 
                 return true;
 
+            case R.id.action_edit:
+                AddNoteBottomSheetDialogFragment.editInstance(selectedNote)
+                        .show(getParentFragmentManager(), "AddNoteBottomSheetDialogFragment");
+                return true;
 
         }
         return super.onContextItemSelected(item);
