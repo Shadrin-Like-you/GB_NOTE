@@ -10,7 +10,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentResultListener;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.material.navigation.NavigationView;
 import com.shadrin_like_you.gb_note.R;
 
@@ -18,12 +20,30 @@ public class MainActivity extends AppCompatActivity implements ToolbarHolder {
 
     private DrawerLayout drawerLayout;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         drawerLayout = findViewById(R.id.drawer);
+
+
+        getSupportFragmentManager()
+                .setFragmentResultListener(AuthorizationFragment.KEY_RESULT_AUTHORIZED, this, new FragmentResultListener() {
+                    @Override
+                    public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
+                        showNotes();
+                    }
+                });
+
+        if (savedInstanceState == null) {
+            if (isAuthorized()) {
+                showNotes();
+            } else {
+                showAuth();
+            }
+        }
 
         NavigationView navigationView = findViewById(R.id.navigation);
 
@@ -107,5 +127,24 @@ public class MainActivity extends AppCompatActivity implements ToolbarHolder {
     });
 
 */
+
+    private void showNotes() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container, new NotesFragment())
+                .commit();
+    }
+
+    private void showAuth() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container, new AuthorizationFragment())
+                .commit();
+    }
+
+    private boolean isAuthorized() {
+        return GoogleSignIn.getLastSignedInAccount(this) != null;
+    }
+
 
 }
