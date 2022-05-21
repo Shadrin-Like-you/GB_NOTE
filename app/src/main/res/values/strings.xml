@@ -1,5 +1,22 @@
 <resources>
     <string name="app_name">GB_Note</string>
     <string name="note1">Заметка 1</string>
-    <string name="notes">Note</string>
+    <string name="notes">Notes</string>
+    <string name="action_info">info</string>
+    <string name="action_share">share</string>
+    <string name="action_send">send</string>
+    <string name="action_notes">Notes</string>
+    <string name="action_fragment">Fragment</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+    <string name="action_copy">Copy</string>
+    <string name="action_search">Search</string>
+    <string name="Setting">Settings</string>
+    <string name="action_notifications">Notification</string>
+    <string name="info">Info</string>
+    <string name="title">Title</string>
+    <string name="message">Message</string>
+    <string name="save">Save</string>
+    <string name="action_edit">Edit</string>
+    <string name="action_delete">Deleted</string>
 </resources>
